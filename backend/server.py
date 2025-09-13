@@ -508,15 +508,6 @@ async def get_monthly_report(month: str, current_user: User = Depends(get_curren
         customer_types=customer_types
     )
 
-# Stock Management
-@api_router.get("/products/low-stock")
-async def get_low_stock_products(current_user: User = Depends(get_current_user)):
-    """Get products with stock below minimum threshold"""
-    products = await db.products.find({
-        "$expr": {"$lte": ["$stock", "$min_stock"]}
-    }).to_list(100)
-    return [Product(**parse_from_mongo(product)) for product in products]
-
 # Dashboard Stats
 @api_router.get("/dashboard/stats")
 async def get_dashboard_stats(current_user: User = Depends(get_current_user)):
