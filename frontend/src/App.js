@@ -514,6 +514,8 @@ const Transaction = () => {
   const [paymentMethod, setPaymentMethod] = useState('tunai');
   const [paymentAmount, setPaymentAmount] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [manualDiscountType, setManualDiscountType] = useState('none'); // 'none', 'percentage', 'amount'
+  const [manualDiscountValue, setManualDiscountValue] = useState('');
 
   useEffect(() => {
     fetchProducts();
