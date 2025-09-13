@@ -492,7 +492,7 @@ async def get_monthly_report(month: str, current_user: User = Depends(get_curren
     return ReportSummary(
         period="monthly",
         start_date=start.strftime("%Y-%m-%d"),
-        end_date=(end - datetime.timedelta(days=1)).strftime("%Y-%m-%d"),
+        end_date=(end - timedelta(days=1)).strftime("%Y-%m-%d"),
         total_transactions=len(transactions),
         total_revenue=total_revenue,
         total_items_sold=total_items_sold,
