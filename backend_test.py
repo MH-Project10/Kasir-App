@@ -143,10 +143,11 @@ class POSSystemTester:
         
         try:
             # Create test products
+            timestamp = datetime.now().strftime('%H%M%S')
             test_products = [
                 {
                     "name": "Oli Mesin Castrol GTX 10W-40",
-                    "sku": "OLI-GTX-10W40",
+                    "sku": f"OLI-GTX-10W40-{timestamp}",
                     "description": "Oli mesin berkualitas tinggi untuk kendaraan",
                     "price_regular": 85000,
                     "price_sales": 80000,
@@ -157,12 +158,12 @@ class POSSystemTester:
                 },
                 {
                     "name": "Ban Motor Michelin 90/80-14",
-                    "sku": "BAN-MICH-9080-14",
+                    "sku": f"BAN-MICH-9080-14-{timestamp}",
                     "description": "Ban motor tubeless berkualitas premium",
                     "price_regular": 320000,
                     "price_sales": 310000,
                     "price_bengkel": 300000,
-                    "stock": 25,
+                    "stock": 3,  # Low stock for testing
                     "min_stock": 5,
                     "category": "Ban Motor"
                 }
