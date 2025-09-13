@@ -655,7 +655,7 @@ const Transaction = () => {
     product.sku.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const { subtotal, discountAmount, total } = calculateTotal();
+  const { subtotal, autoDiscountAmount, manualDiscountAmount, totalDiscountAmount, total } = calculateTotal();
   const selectedCustomerTypeData = customerTypes.find(ct => ct.name === selectedCustomerType);
 
   return (
@@ -741,19 +741,55 @@ const Transaction = () => {
             ))}
           </div>
 
+          {/* Manual Discount Section */}
+          <div className="mb-4 p-3 bg-gray-50 rounded-md">
+            <h4 className="text-sm font-medium text-gray-700 mb-2">Diskon Manual</h4>
+            <div className="grid grid-cols-2 gap-2 mb-2">
+              <select
+                value={manualDiscountType}
+                onChange={(e) => setManualDiscountType(e.target.value)}
+                className="px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+              >
+                <option value="none">Tidak Ada</option>
+                <option value="percentage">Persen (%)</option>
+                <option value="amount">Nominal (Rp)</option>
+              </select>
+              <input
+                type="number"
+                value={manualDiscountValue}
+                onChange={(e) => setManualDiscountValue(e.target.value)}
+                disabled={manualDiscountType === 'none'}
+                placeholder={manualDiscountType === 'percentage' ? '0' : '0'}
+                className="px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-100"
+              />
+            </div>
+          </div>
+
           {/* Totals */}
           <div className="border-t pt-4 space-y-2">
             <div className="flex justify-between text-sm">
               <span>Subtotal:</span>
               <span>Rp {subtotal.toLocaleString()}</span>
             </div>
-            {discountAmount > 0 && (
+            {autoDiscountAmount > 0 && (
               <div className="flex justify-between text-sm text-green-600">
-                <span>Diskon ({selectedCustomerTypeData?.discount_percentage}%):</span>
-                <span>- Rp {discountAmount.toLocaleString()}</span>
+                <span>Diskon Otomatis ({selectedCustomerTypeData?.discount_percentage}%):</span>
+                <span>- Rp {autoDiscountAmount.toLocaleString()}</span>
               </div>
             )}
-            <div className="flex justify-between text-lg font-bold">
+            {manualDiscountAmount > 0 && (
+              <div className="flex justify-between text-sm text-blue-600">
+                <span>Diskon Manual:</span>
+                <span>- Rp {manualDiscountAmount.toLocaleString()}</span>
+              </div>
+            )}
+            {totalDiscountAmount > 0 && (
+              <div className="flex justify-between text-sm text-gray-600 border-t pt-1">
+                <span>Total Diskon:</span>
+                <span>- Rp {totalDiscountAmount.toLocaleString()}</span>
+              </div>
+            )}
+            <div className="flex justify-between text-lg font-bold border-t pt-2">
               <span>Total:</span>
               <span>Rp {total.toLocaleString()}</span>
             </div>
