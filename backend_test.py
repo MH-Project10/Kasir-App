@@ -72,7 +72,7 @@ class POSSystemTester:
                     
                     # Test user registration
                     register_data = {
-                        "username": "kasir_maya",
+                        "username": f"kasir_maya_{datetime.now().strftime('%H%M%S')}",
                         "password": "maya2024",
                         "role": "kasir"
                     }
