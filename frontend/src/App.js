@@ -613,6 +613,11 @@ const Transaction = () => {
     const { total } = calculateTotal();
     const payAmount = parseFloat(paymentAmount);
     
+    if (cart.length === 0) {
+      alert('Keranjang kosong! Silakan tambahkan produk terlebih dahulu.');
+      return;
+    }
+    
     if (payAmount < total) {
       alert('Jumlah pembayaran tidak mencukupi!');
       return;
@@ -636,6 +641,8 @@ const Transaction = () => {
       // Reset form
       setCart([]);
       setPaymentAmount('');
+      setManualDiscountType('none');
+      setManualDiscountValue('');
       fetchProducts(); // Refresh to update stock
       
     } catch (error) {
