@@ -578,7 +578,7 @@ const Transaction = () => {
 
   const calculateTotal = () => {
     const selectedCustomerTypeData = customerTypes.find(ct => ct.name === selectedCustomerType);
-    const discountPercentage = selectedCustomerTypeData?.discount_percentage || 0;
+    const autoDiscountPercentage = selectedCustomerTypeData?.discount_percentage || 0;
     
     let subtotal = 0;
     cart.forEach(item => {
@@ -586,10 +586,27 @@ const Transaction = () => {
       subtotal += price * item.quantity;
     });
     
-    const discountAmount = subtotal * (discountPercentage / 100);
-    const total = subtotal - discountAmount;
+    // Auto discount from customer type
+    const autoDiscountAmount = subtotal * (autoDiscountPercentage / 100);
     
-    return { subtotal, discountAmount, total };
+    // Manual discount calculation
+    let manualDiscountAmount = 0;
+    if (manualDiscountType === 'percentage' && manualDiscountValue) {
+      manualDiscountAmount = subtotal * (parseFloat(manualDiscountValue) / 100);
+    } else if (manualDiscountType === 'amount' && manualDiscountValue) {
+      manualDiscountAmount = parseFloat(manualDiscountValue);
+    }
+    
+    const totalDiscountAmount = autoDiscountAmount + manualDiscountAmount;
+    const total = Math.max(0, subtotal - totalDiscountAmount); // Ensure total is not negative
+    
+    return { 
+      subtotal, 
+      autoDiscountAmount, 
+      manualDiscountAmount, 
+      totalDiscountAmount, 
+      total 
+    };
   };
 
   const processTransaction = async () => {
